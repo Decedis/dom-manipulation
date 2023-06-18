@@ -12,7 +12,7 @@
  */
 
 // Your code goes here...
-
+let allItems = document.querySelectorAll('.item');
 
 
 /**
@@ -23,7 +23,7 @@
  */
 
 // Your code goes here...
-
+let sortBtn = document.querySelectorAll('.sortBtn');
 
 
 /**
@@ -38,7 +38,41 @@
  */
 
 // Your code goes here...
+function sortData(direction) {
+    let container = document.getElementById('main');
+    let itemList = Array.from(allItems);
 
+    if (direction === 'desc') {
+        let sortConst = ((a,b) => {
+            if (a.id < b.id ){
+                return 1
+            } 
+            if ( a.id > b.id) {
+                return -1
+            }
+            return 0
+        });
+
+        let sorted = itemList.sort(sortConst);
+        sorted.forEach((card) => container.appendChild(card));
+    }
+    if (direction === 'asc') {
+        let sortConst = ((a,b) => {
+            if (a.id > b.id ){
+                return 1
+            } 
+            if ( a.id < b.id) {
+                return -1
+            }
+            return 0
+        });
+
+        let sorted = itemList.sort(sortConst);
+        sorted.forEach((card) => container.appendChild(card));
+    }
+    //sort by id 
+    //append in order
+}
 
 
 /**
@@ -50,5 +84,8 @@
  */
 
 // Your code goes here...
+let buttons = Array.from(sortBtn);
 
-
+for (let i = 0; i < buttons.length; i++){
+    buttons[i].addEventListener('click', () => i === 0 ? sortData('asc') : sortData('desc'));
+}

@@ -12,7 +12,7 @@
  */
 
 // Your code goes here...
-
+let allItems = document.getElementsByClassName('item');
 
 
 /**
@@ -23,7 +23,7 @@
  * */
 
 // Your code goes here
-
+const main = document.getElementById('main');
 
 
 /**
@@ -34,7 +34,7 @@
  */
 
 // Your code goes here
-
+const favs = document.getElementById('favs');
 
 
 /**
@@ -47,7 +47,46 @@
  */
 
 // Your code goes here
+function updateCollections(id, direction) {
+    //accept item ID 
+    //direction is to favs or to main
+    //change icon accordingly
+    let elementID = document.getElementById(id); 
+    let icon = document.querySelector(`[id='${id}'] .fa-solid`);
 
+    if (direction === 'toMain' || direction === 'toFavs') {
+        
+        if (direction === 'toFavs') {
+            let target = document.getElementById('favs');
+            let home = document.getElementById( elementID.parentElement.id);
+
+            icon.classList.remove('fa-heart-circle-plus');
+            icon.classList.add('fa-heart-crack');
+
+            // elementID.classList.remove('fa-heart-circle-plus');
+            // elementID.classList.add('fa-heart-crack');
+
+            home.removeChild(elementID);
+            target.appendChild(elementID);
+        } else {
+            let target = document.getElementById('main');
+            let home = document.getElementById( elementID.parentElement.id);
+
+            icon.classList.remove('fa-heart-crack');
+            icon.classList.add('fa-heart-circle-plus');
+            // elementID.classList.remove('fa-heart-crack');
+            // elementID.classList.add('fa-heart-circle-plus');
+
+            home.removeChild(elementID);
+            target.appendChild(elementID);
+        }
+    }
+    else {
+        console.log('Error: Invalid direction. Check function input.');
+    }
+
+    
+}
 
 
 /**
@@ -65,5 +104,20 @@
  */
 
 // Your code goes here...
+let itemList = Array.from(allItems);
+
+for (const item of itemList) {
+    if (item.parentElement.id === 'main') {
+        item.addEventListener("click", () => {
+            updateCollections(item.id, 'toFavs');
+        });   
+    }
+    if (item.parentElement.id === 'favs') {
+        item.addEventListener("click", () => {
+            updateCollections(item.id, 'toMain');
+        });   
+    }
+}
+
 
 

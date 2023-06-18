@@ -10,6 +10,10 @@
  * @requirement
  * Event delegation MUST be used
  */
+const LS = localStorage;
+if (!LS.getItem('favorites')) {
+    LS.setItem('favorites', JSON.stringify([]));
+}
 
 /**
  * @task
@@ -22,6 +26,55 @@
  * * * Add the item's id to the local storage
  * * Make all the items that are listed in the favorites LS save the red background color when the page is reloaded
  */
+
+let favorites = JSON.parse(LS.getItem('favorites')); //should be an array
+//recover card state
+let cardList = document.querySelectorAll('.card');
+cardList.forEach((card) => {
+    if (favorites.includes(card.id)) {
+        card.style.background = 'red';
+    }
+});
+
+function addFavorite(cardData) {
+    if (!favorites.includes(cardData.id)) {
+        // LS.setItem('favorites', JSON.stringify()) //send to favs in data struct
+        favorites.push(cardData.id);
+        console.log('Variable favorites, ', favorites);
+    }
+    LS.setItem('favorites', JSON.stringify(favorites));
+}
+
+function removeFavorite(cardData) {
+    if (favorites.includes(cardData.id)) {
+        // LS.setItem('favorites', JSON.stringify()) //send to favs in data struct
+        let idLocation = favorites.indexOf(cardData.id);
+        favorites.splice(idLocation, 1);
+        console.log('Variable favorites, ', favorites);
+    }
+    LS.setItem('favorites', JSON.stringify(favorites));
+}
+
+
+const itemEvent = (event) => {
+    const card = event.target // what is clicked returns element value, this is the item
+    // console.log(card); //testing 
+    if (Array.from(card.classList).includes('card')) {
+        //list includes this item? then => 
+        if (card.style.background === 'white' || !card.style.background) {
+            card.style.background = 'red';
+            addFavorite(card);
+        }
+        else if((card.style.background === 'red' || !card.style.background)){
+            card.style.background = 'white';
+            removeFavorite(card);
+        }
+    }
+};
+
+const container = document.querySelector('.cardsContainer');
+container.addEventListener('click', itemEvent);
+
 
 /**
  * @hint
@@ -38,3 +91,13 @@
  */
 
 // Your code goes here...
+
+/*
+- querySelect All cards into an array 
+- map each element into their own ID value
+- for each element, check if their background == white or red
+- if white = unselected
+- if red = favorite
+- Upon each click event, update the localStorage
+*/
+
