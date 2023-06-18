@@ -53,12 +53,15 @@ function updateCollections(id, direction) {
     //change icon accordingly
     let elementID = document.getElementById(id); 
     let icon = document.querySelector(`[id='${id}'] .fa-solid`);
-
+   
     if (direction === 'toMain' || direction === 'toFavs') {
-        
         if (direction === 'toFavs') {
+            console.log('Remove from main');
+
+
             let target = document.getElementById('favs');
             let home = document.getElementById( elementID.parentElement.id);
+            let element = document.getElementById(id);
 
             icon.classList.remove('fa-heart-circle-plus');
             icon.classList.add('fa-heart-crack');
@@ -66,19 +69,30 @@ function updateCollections(id, direction) {
             // elementID.classList.remove('fa-heart-circle-plus');
             // elementID.classList.add('fa-heart-crack');
 
-            home.removeChild(elementID);
-            target.appendChild(elementID);
-        } else {
+            // target.appendChild(elementID);
+            // home.removeChild(elementID);
+            favs.appendChild(elementID);
+            main.removeChild(elementID);
+            
+        }
+        if (direction === 'toMain') {
+            console.log('Remove from fav');
+
+
             let target = document.getElementById('main');
-            let home = document.getElementById( elementID.parentElement.id);
+            let home = document.getElementById( elementID.parentElement.id );
+
 
             icon.classList.remove('fa-heart-crack');
             icon.classList.add('fa-heart-circle-plus');
             // elementID.classList.remove('fa-heart-crack');
             // elementID.classList.add('fa-heart-circle-plus');
 
-            home.removeChild(elementID);
-            target.appendChild(elementID);
+            // target.appendChild(elementID);
+            // home.removeChild(elementID);
+            main.appendChild(elementID);
+            favs.removeChild(elementID);
+            
         }
     }
     else {
@@ -106,18 +120,29 @@ function updateCollections(id, direction) {
 // Your code goes here...
 let itemList = Array.from(allItems);
 
-for (const item of itemList) {
-    if (item.parentElement.id === 'main') {
-        item.addEventListener("click", () => {
-            updateCollections(item.id, 'toFavs');
-        });   
-    }
-    if (item.parentElement.id === 'favs') {
-        item.addEventListener("click", () => {
-            updateCollections(item.id, 'toMain');
-        });   
-    }
-}
+// for (const item of itemList) {
+//     if (item.parentElement.id === 'main') {
+//         console.log('To Favorites triggered');  
+//         item.addEventListener("click", () => {
+//             updateCollections(item.id, 'toFavs');
+//         });   
+//     }
+//     else if (item.parentElement.id === 'favs') {
+//         console.log('To Main triggered');
+//         item.addEventListener("click", () => {
+//             updateCollections(item.id, 'toMain');
+//         });   
+//     }
+// }
 
-
+itemList.forEach((item) => {
+    item.addEventListener('click', () => {
+        if (item.parentElement.id === 'main') { 
+            updateCollections(item.id, 'toFavs'); 
+        }
+        if (item.parentElement.id === 'favs') { 
+            updateCollections(item.id, 'toMain'); 
+        }
+    })
+});
 
